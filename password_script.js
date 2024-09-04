@@ -1,25 +1,28 @@
-document.addEventListener("DOMContentLoaded", function () {
-  // Отримати email з sessionStorage
-  const userEmail = sessionStorage.getItem("userEmail");
-
-  // Відобразити email на сторінці
-  document.getElementById("userEmail").textContent = userEmail;
-});
-
-document.getElementById("showPassword").addEventListener("change", function () {
-  const passwordInput = document.getElementById("password");
-  passwordInput.type = this.checked ? "text" : "password";
-});
-
-document
-  .getElementById("passwordForm")
-  .addEventListener("submit", function (event) {
+document.getElementById('passwordForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
     const password = document.getElementById("password").value;
+    const email = sessionStorage.getItem('userEmail');
 
-    // Тут можна додати логіку для збереження пароля чи його обробки
-
-    console.log("Entered Password:", password);
-    alert("Entered Password: " + password);
-  });
+    fetch('http://localhost:3003/save-password', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Помилка із збереженням даних на сервері!');
+        }
+        return response.text();
+    })
+    .then(data => {
+        console.log('Пароль збережено:', data);
+        alert('Ваш пароль збережено!');
+    })
+    .catch(error => {
+        console.error('Помилка:', error);
+        alert('Не вдалося зберегти дані!');
+    });
+});
