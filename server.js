@@ -43,12 +43,12 @@ app.post('/save-password', (req, res) => {
                         console.error('Помилка запису файлу:', err);
                         res.status(500).send('Помилка із збереженням даних!');
                     } else {
-                        console.log('Пароль успішно збережено для:', email);
+                        console.log(`Пароль успішно збережено для: ${email}`);
                         res.send('Дані збережено');
                     }
                 });
             } else {
-                console.error('Не знайдено запису для оновлення:', email);
+                console.error(`Не знайдено запису для оновлення: ${email}`);
                 res.status(500).send('Не знайдено запису для оновлення!');
             }
         }
